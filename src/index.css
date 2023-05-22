@@ -35,7 +35,7 @@ body {
   border-radius: 50%;
   box-shadow: 4px 4px 4px #0005;
   transform: translate(var(--x), 0);
-  transition: scale 0.5s ease;
+  transition: transform 0.5s ease;
 }
 
 .winner {
