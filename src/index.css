@@ -44,7 +44,13 @@ body {
   z-index: 5;
 }
 
-button.start {
+.buttons {
+  display: flex;
+  gap: 2rem;
+}
+
+button.start,
+button.reset {
   padding: 0.5rem;
   font-size: 1.5rem;
 }
