@@ -1,15 +1,7 @@
+import { getRandomNumber } from "./modules/getRandomNumber.js";
+import { prepareGame } from "./modules/prepareGame.js";
+import { PLAYERS } from "./modules/PLAYERS.js";
 import confetti from "canvas-confetti";
-
-const PLAYERS = [
-  { name: "Agustina", color: "#00CED1", x: 0, picture: "images/agustina.png" },
-  { name: "Dave", color: "#50F6B2", x: 0, picture: "images/dave.png" },
-  { name: "Fany", color: "#CA2AF9", x: 0, picture: "images/fany.jpg" },
-  { name: "Isabel", color: "#000000", x: 0, picture: "images/isabel.jpg" },
-  { name: "Nahomi", color: "#B5FF33", x: 0, picture: "images/nahomi.jpg" },
-  { name: "Naomi", color: "#d4045b", x: 0, picture: "images/naomi.jpg" },
-  { name: "Pablo", color: "#99FF00", x: 0, picture: "images/pablo.jpg" },
-  { name: "Sara", color: "rgb(32, 203, 157)", x: 0, picture: "images/sara.jpg" }
-];
 
 const FINISH_LIMIT = 700;
 const CONFETTI_OPTIONS = {
@@ -18,29 +10,25 @@ const CONFETTI_OPTIONS = {
   origin: { y: 0.6 }
 };
 
-function prepareGame() {
-  console.log("Preparando juego...");
-
-  const trackRace = document.querySelector(".track-race");
-  PLAYERS.forEach((player) => {
-    const image = document.createElement("img");
-    image.classList.add("player");
-    image.src = player.picture;
-    image.alt = player.name;
-    image.title = player.name;
-    image.style.setProperty("--x", `${player.x}px`);
-    image.style.setProperty("--color", player.color);
-    trackRace.appendChild(image);
+function resetGame() {
+  PLAYERS.forEach(player => {
+    player.x = 0;
   });
+  updatePlayers();
+  const startButton = document.querySelector(".start");
+  startButton.toggleAttribute("disabled");
+  const resetButton = document.querySelector(".reset");
+  resetButton.toggleAttribute("disabled");
+
+  const winners = document.querySelectorAll(".winner");
+  winners.forEach(winner => winner.classList.remove("winner"));
 }
 
 function startGame() {
   console.log("Empieza el juego...");
+  const startButton = document.querySelector(".start");
+  startButton.toggleAttribute("disabled");
   startIteration();
-}
-
-function getRandomNumber() {
-  return Math.floor(Math.random() * 10);
 }
 
 function updatePlayers() {
@@ -66,6 +54,8 @@ function startIteration() {
     console.log("Ha ganado " + winner.alt);
     winner.classList.add("winner");
     confetti(CONFETTI_OPTIONS);
+    const resetButton = document.querySelector(".reset");
+    resetButton.toggleAttribute("disabled");
   } else {
     setTimeout(() => startIteration(), 50);
   }
@@ -89,3 +79,6 @@ prepareGame();
 
 const startButton = document.querySelector(".start");
 startButton.addEventListener("click", () => startGame());
+
+const resetButton = document.querySelector(".reset");
+resetButton.addEventListener("click", () => resetGame());
